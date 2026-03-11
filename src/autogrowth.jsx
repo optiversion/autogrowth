@@ -227,7 +227,7 @@ export default function AutoGrowth() {
   const [chartData, setChartData] = useState([{ exp: 0, conversion: 2.80 }]);
   const [conv, setConv] = useState(2.80);
   const [showProg, setShowProg] = useState(true);
-  const [progWidth, setProgWidth] = useState(360);
+  const [progWidth, setProgWidth] = useState(440);
   const [loopNum, setLoopNum] = useState(0);
 
   const runRef = useRef(false);
@@ -237,14 +237,21 @@ export default function AutoGrowth() {
   const expN = useRef(0);
   const logEndRef = useRef(null);
   const dragRef = useRef(false);
+  const movedDuringDrag = useRef(false);
 
   useEffect(() => {
     const onMouseMove = (e) => {
       if (!dragRef.current) return;
-      // We limit between 240px and 800px width. e.clientX roughly equals the width since it's on the left screen edge.
-      setProgWidth(Math.max(240, Math.min(800, e.clientX)));
+      movedDuringDrag.current = true;
+      // We limit between 280px and 1000px width. e.clientX roughly equals the width since it's on the left screen edge.
+      setProgWidth(Math.max(280, Math.min(1000, e.clientX)));
     };
-    const onMouseUp = () => { dragRef.current = false; document.body.style.cursor = "default"; };
+    const onMouseUp = () => {
+      dragRef.current = false;
+      document.body.style.cursor = "default";
+      // Defer clearing moved marker so onClick can read it when released on the button
+      setTimeout(() => { movedDuringDrag.current = false; }, 100);
+    };
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
     return () => {
@@ -423,11 +430,16 @@ export default function AutoGrowth() {
           onMouseDown={(e) => {
             if (showProg) {
               dragRef.current = true;
+              movedDuringDrag.current = false;
               document.body.style.cursor = "col-resize";
               e.preventDefault();
             }
           }}
-          onClick={() => setShowProg(p => !p)}
+          onClick={() => {
+            if (!movedDuringDrag.current) {
+              setShowProg(p => !p);
+            }
+          }}
           style={{
             width: 24, background: dragRef.current ? "#18181b" : "transparent", border: "none", borderRight: "1px solid #18181b",
             color: "#71717a", cursor: showProg ? "col-resize" : "pointer", fontSize: 11, display: "flex", alignItems: "center",
@@ -469,7 +481,7 @@ export default function AutoGrowth() {
           </div>
 
           {/* CURRENT STATE + CURRENT EXPERIMENT — taller highlight card */}
-          <div style={{ height: 185, borderBottom: "1px solid #18181b", padding: "16px 22px", display: "flex", flexDirection: "column", background: curMod ? "#141418" : "transparent", transition: "background 0.3s" }}>
+          <div style={{ minHeight: 236, borderBottom: "1px solid #18181b", padding: "16px 22px", display: "flex", flexDirection: "column", background: curMod ? "#121215" : "transparent", transition: "background 0.3s" }}>
 
             {/* Current best state */}
             <div style={{ marginBottom: 12 }}>
@@ -521,22 +533,24 @@ export default function AutoGrowth() {
                   ))}
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                  <div style={{ fontSize: 14 }}>
-                    <span style={{ color: "#a1a1aa", fontWeight: 600 }}>EXP-{String(expN.current).padStart(3, "0")}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: curMod ? "#19191d" : "transparent", padding: curMod ? "14px 18px" : "14px 0", borderRadius: 8, marginTop: 12, marginBottom: 8, border: curMod ? "1px solid #27272a" : "1px solid transparent", transition: "all 0.3s ease" }}>
+                  <div style={{ fontSize: 16, display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ color: curMod ? "#e4e4e7" : "#71717a", fontWeight: 700, letterSpacing: "0.05em", transition: "color 0.3s" }}>
+                      EXP-{String(expN.current).padStart(3, "0")}
+                    </span>
                     {curMod && phaseIdx >= 1 && (
-                      <>
-                        <span style={{ color: "#71717a" }}> — change </span>
-                        <span style={{ color: "#d4d4d8", fontWeight: 500 }}>{curMod.lever}</span>
-                        <span style={{ color: "#71717a" }}> from </span>
-                        <span style={{ color: "#fbbf24", opacity: 0.8 }}>{curMod.from}</span>
-                        <span style={{ color: "#71717a" }}> to </span>
-                        <span style={{ color: "#c4b5fd", fontWeight: 600 }}>{curMod.to}</span>
-                      </>
+                      <span style={{ background: "#27272a44", padding: "6px 14px", borderRadius: 6, border: "1px dashed #52525b", display: "inline-flex", gap: 8, alignItems: "center", boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
+                        <span style={{ color: "#a1a1aa", fontSize: 13 }}>change</span>
+                        <span style={{ color: "#f4f4f5", fontWeight: 600, fontSize: 15 }}>{curMod.lever}</span>
+                        <span style={{ color: "#71717a", fontSize: 13 }}>from</span>
+                        <span style={{ color: "#fbbf24", opacity: 0.9, fontWeight: 500, fontSize: 14 }}>{curMod.from}</span>
+                        <span style={{ color: "#71717a", fontSize: 13 }}>to</span>
+                        <span style={{ color: "#c4b5fd", fontWeight: 700, fontSize: 15 }}>{curMod.to}</span>
+                      </span>
                     )}
                   </div>
                   {curResult && phaseIdx >= 6 && (
-                    <span style={{ fontSize: 18, fontWeight: 800, color: DC[curResult.decision], letterSpacing: "0.08em" }}>
+                    <span style={{ fontSize: 24, fontWeight: 800, color: DC[curResult.decision], letterSpacing: "0.08em" }}>
                       {curResult.decision}
                     </span>
                   )}
