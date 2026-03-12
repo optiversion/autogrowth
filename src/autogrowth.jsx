@@ -452,7 +452,7 @@ export default function AutoGrowth() {
         <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
           {/* CHART & IMPACT PANEL */}
-          <div style={{ height: 160, borderBottom: "1px solid #18181b", display: "flex" }}>
+          <div style={{ height: 180, borderBottom: "1px solid #18181b", display: "flex" }}>
 
             {/* Left: Chart */}
             <div style={{ flex: 1, padding: "14px 18px 6px", borderRight: "1px solid #18181b", display: "flex", flexDirection: "column" }}>
