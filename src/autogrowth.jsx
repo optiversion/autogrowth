@@ -191,7 +191,21 @@ const PHASES = [
   { key: "write", label: "WRITE LOG", dur: 600 },
 ];
 
-const DC = { KEEP: "#4ade80", REVERT: "#fbbf24", BLOCK: "#f87171" };
+const DC = { KEEP: "#4ade80", REVERT: "#f87171", BLOCK: "#fbbf24" };
+
+const BlinkingDot = (props) => {
+  const { cx, cy, payload } = props;
+  if (payload.exp !== 0) return <circle cx={cx} cy={cy} r={3} fill="#4ade80" />;
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={4} fill="#4ade80">
+        <animate attributeName="opacity" values="1;0.2;1" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle cx={cx} cy={cy} r={3} fill="#4ade80" />
+    </g>
+  );
+};
 
 function StateDisplay({ state, changedLever, highlightNew }) {
   return (
@@ -463,27 +477,33 @@ export default function AutoGrowth() {
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em" }}>FREE → PLUS CONVERSION FROM USAGE-LIMIT MOMENT</span>
               </div>
-              {chartData.length > 1 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#141418" />
-                    <XAxis dataKey="exp" tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" />
-                    <YAxis domain={[2, 5.5]} tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" tickFormatter={v => `${v}%`} />
-                    <Tooltip content={({ active, payload }) => active && payload?.length ? (
-                      <div style={{ background: "#141418", border: "1px solid #27272a", borderRadius: 3, padding: "5px 10px", fontSize: 11, color: "#a1a1aa" }}>
-                        Experiment {payload[0]?.payload?.exp}: {payload[0].value}%
-                      </div>
-                    ) : null} />
-                    <ReferenceLine y={2.8} stroke="#f8717133" strokeDasharray="4 4" label={{ value: "2.80% baseline", position: "insideTopRight", fill: "#f8717155", fontSize: 9 }} />
-                    <ReferenceLine y={4.0} stroke="#4ade8028" strokeDasharray="4 4" label={{ value: "4.00% target", position: "insideTopRight", fill: "#4ade8044", fontSize: 9 }} />
-                    <Line type="monotone" dataKey="conversion" stroke="#4ade80" strokeWidth={1.5} dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
-              ) : (
-                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#27272a", fontSize: 13 }}>
-                  Press START to begin
-                </div>
-              )}
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData} margin={{ top: 8, right: 10, bottom: 0, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#141418" vertical={false} />
+                  <XAxis
+                    dataKey="exp"
+                    tick={{ fontSize: 9, fill: "#3f3f46" }}
+                    stroke="#141418"
+                    hide={chartData.length <= 1}
+                  />
+                  <YAxis domain={[2, 5.5]} tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" tickFormatter={v => `${v}%`} />
+                  <Tooltip content={({ active, payload }) => active && payload?.length ? (
+                    <div style={{ background: "#141418", border: "1px solid #27272a", borderRadius: 3, padding: "5px 10px", fontSize: 11, color: "#a1a1aa" }}>
+                      Experiment {payload[0]?.payload?.exp}: {payload[0].value}%
+                    </div>
+                  ) : null} />
+                  <ReferenceLine y={2.8} stroke="#f8717133" strokeDasharray="4 4" label={{ value: "2.80% baseline", position: "insideTopRight", fill: "#f8717155", fontSize: 9 }} />
+                  <ReferenceLine y={4.0} stroke="#4ade8028" strokeDasharray="4 4" label={{ value: "4.00% target", position: "insideTopRight", fill: "#4ade8044", fontSize: 9 }} />
+                  <Line
+                    type="monotone"
+                    dataKey="conversion"
+                    stroke="#4ade80"
+                    strokeWidth={1.5}
+                    dot={<BlinkingDot />}
+                    isAnimationActive={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
 
             {/* Right: Business Impact */}
