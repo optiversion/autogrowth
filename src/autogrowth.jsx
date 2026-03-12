@@ -207,7 +207,11 @@ const BlinkingDot = (props) => {
         cy={cy}
         r={4}
         fill="#4ade80"
-        style={{ animation: "dotPulse 2s infinite ease-in-out" }}
+        style={{
+          animation: "dotPulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1)",
+          transformOrigin: "center",
+          transformBox: "fill-box"
+        }}
       />
       <circle cx={cx} cy={cy} r={3} fill="#4ade80" />
     </g>
@@ -389,8 +393,8 @@ export default function AutoGrowth() {
           50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.4); transform: scale(1.03); }
         }
         @keyframes dotPulse {
-          0%, 100% { opacity: 1; r: 4; }
-          50% { opacity: 0.2; r: 7; }
+          0% { opacity: 0.6; transform: scale(1); }
+          100% { opacity: 0; transform: scale(3); }
         }
         *{box-sizing:border-box;margin:0;padding:0}
         ::-webkit-scrollbar{width:5px}
