@@ -485,7 +485,7 @@ export default function AutoGrowth() {
 
             {/* Right: Business Impact */}
             <div style={{ width: 340, padding: "14px 22px", background: "#0b0b0f", display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em", marginBottom: 14 }}>BUSINESS IMPACT (ESTIMATED)</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em", marginBottom: 14 }}>ESTIMATED BUSINESS IMPACT</span>
 
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, alignItems: "baseline" }}>
                 <div>
