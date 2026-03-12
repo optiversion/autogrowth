@@ -364,8 +364,8 @@ export default function AutoGrowth() {
         @keyframes slideIn { from{opacity:0;transform:translateY(-3px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
         @keyframes glow { 
-          0%, 100% { box-shadow: 0 0 0px 0px rgba(255,255,255,0); border-color: rgba(244, 244, 245, 0.4); }
-          50% { box-shadow: 0 0 15px 1px rgba(255,255,255,0.15); border-color: rgba(244, 244, 245, 1); }
+          0%, 100% { box-shadow: 0 0 0px 0px rgba(255,255,255,0); transform: scale(1); }
+          50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.4); transform: scale(1.03); }
         }
         *{box-sizing:border-box;margin:0;padding:0}
         ::-webkit-scrollbar{width:5px}
