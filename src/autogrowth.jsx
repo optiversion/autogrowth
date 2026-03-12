@@ -458,7 +458,6 @@ export default function AutoGrowth() {
             <div style={{ flex: 1, padding: "14px 18px 6px", borderRight: "1px solid #18181b", display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em" }}>FREE → PLUS CONVERSION FROM USAGE-LIMIT MOMENT</span>
-                <span style={{ fontSize: 16, fontWeight: 700, color: conv > 2.85 ? "#4ade80" : "#a1a1aa" }}>{conv.toFixed(2)}%</span>
               </div>
               {chartData.length > 1 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -489,12 +488,12 @@ export default function AutoGrowth() {
 
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, alignItems: "baseline" }}>
                 <div>
-                  <div style={{ fontSize: 10, color: "#71717a", letterSpacing: "0.05em", marginBottom: 2 }}>STARTING</div>
+                  <div style={{ fontSize: 10, color: "#71717a", letterSpacing: "0.05em", marginBottom: 2 }}>STARTING CONVERSION</div>
                   <div style={{ fontSize: 15, color: "#a1a1aa", fontWeight: 600 }}>2.80%</div>
                 </div>
                 <div style={{ color: "#3f3f46" }}>→</div>
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: 10, color: "#71717a", letterSpacing: "0.05em", marginBottom: 2 }}>CURRENT</div>
+                  <div style={{ fontSize: 10, color: "#71717a", letterSpacing: "0.05em", marginBottom: 2 }}>CURRENT CONVERSION</div>
                   <div style={{ fontSize: 18, color: conv > 2.85 ? "#4ade80" : "#d4d4d8", fontWeight: 700 }}>{conv.toFixed(2)}%</div>
                 </div>
               </div>
@@ -509,15 +508,18 @@ export default function AutoGrowth() {
 
                 return (
                   <div style={{ background: "#141418", border: "1px solid #27272a", borderRadius: 8, padding: "12px 16px", marginTop: "auto" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                      <span style={{ fontSize: 11, color: "#a1a1aa", fontWeight: 600 }}>ANNUALIZED ARR LIFT</span>
-                      <span style={{ fontSize: 10, color: "#71717a" }}>@ 5M users/wk</span>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                      <span style={{ fontSize: 11, color: "#a1a1aa", fontWeight: 600, letterSpacing: "0.03em" }}>ANNUALIZED ARR LIFT</span>
+                      <span style={{ fontSize: 9, color: "#52525b" }}>(assumes $20/mo Plus)</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                      <span style={{ fontSize: 22, fontWeight: 800, color: annualizedARR > 0 ? "#4ade80" : "#d4d4d8", letterSpacing: "-0.02em" }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                      <span style={{ fontSize: 24, fontWeight: 800, color: annualizedARR > 0 ? "#4ade80" : "#d4d4d8", letterSpacing: "-0.02em" }}>
                         +${(annualizedARR / 1_000_000).toFixed(1)}M
                       </span>
-                      <span style={{ fontSize: 10, color: "#71717a" }}>w/ 20% scale-down penalty</span>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <span style={{ fontSize: 10, color: "#71717a" }}>@ 5M users/wk</span>
+                        <span style={{ fontSize: 10, color: "#71717a" }}>w/ 20% scale-down penalty</span>
+                      </div>
                     </div>
                   </div>
                 );
