@@ -451,33 +451,79 @@ export default function AutoGrowth() {
         {/* RIGHT */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
-          {/* CHART */}
-          <div style={{ height: 145, borderBottom: "1px solid #18181b", padding: "10px 18px 6px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em" }}>FREE → PLUS CONVERSION FROM USAGE-LIMIT MOMENT</span>
-              <span style={{ fontSize: 16, fontWeight: 700, color: conv > 2.85 ? "#4ade80" : "#a1a1aa" }}>{conv.toFixed(2)}%</span>
-            </div>
-            {chartData.length > 1 ? (
-              <ResponsiveContainer width="100%" height={108}>
-                <LineChart data={chartData} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#141418" />
-                  <XAxis dataKey="exp" tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" />
-                  <YAxis domain={[2, 5.5]} tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" tickFormatter={v => `${v}%`} />
-                  <Tooltip content={({ active, payload }) => active && payload?.length ? (
-                    <div style={{ background: "#141418", border: "1px solid #27272a", borderRadius: 3, padding: "5px 10px", fontSize: 11, color: "#a1a1aa" }}>
-                      Experiment {payload[0]?.payload?.exp}: {payload[0].value}%
-                    </div>
-                  ) : null} />
-                  <ReferenceLine y={2.8} stroke="#f8717133" strokeDasharray="4 4" label={{ value: "2.80% baseline", position: "insideTopRight", fill: "#f8717155", fontSize: 9 }} />
-                  <ReferenceLine y={4.0} stroke="#4ade8028" strokeDasharray="4 4" label={{ value: "4.00% target", position: "insideTopRight", fill: "#4ade8044", fontSize: 9 }} />
-                  <Line type="monotone" dataKey="conversion" stroke="#4ade80" strokeWidth={1.5} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            ) : (
-              <div style={{ height: 108, display: "flex", alignItems: "center", justifyContent: "center", color: "#27272a", fontSize: 12 }}>
-                Press START to begin
+          {/* CHART & IMPACT PANEL */}
+          <div style={{ height: 160, borderBottom: "1px solid #18181b", display: "flex" }}>
+
+            {/* Left: Chart */}
+            <div style={{ flex: 1, padding: "14px 18px 6px", borderRight: "1px solid #18181b", display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em" }}>FREE → PLUS CONVERSION FROM USAGE-LIMIT MOMENT</span>
+                <span style={{ fontSize: 16, fontWeight: 700, color: conv > 2.85 ? "#4ade80" : "#a1a1aa" }}>{conv.toFixed(2)}%</span>
               </div>
-            )}
+              {chartData.length > 1 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData} margin={{ top: 4, right: 10, bottom: 0, left: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#141418" />
+                    <XAxis dataKey="exp" tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" />
+                    <YAxis domain={[2, 5.5]} tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" tickFormatter={v => `${v}%`} />
+                    <Tooltip content={({ active, payload }) => active && payload?.length ? (
+                      <div style={{ background: "#141418", border: "1px solid #27272a", borderRadius: 3, padding: "5px 10px", fontSize: 11, color: "#a1a1aa" }}>
+                        Experiment {payload[0]?.payload?.exp}: {payload[0].value}%
+                      </div>
+                    ) : null} />
+                    <ReferenceLine y={2.8} stroke="#f8717133" strokeDasharray="4 4" label={{ value: "2.80% baseline", position: "insideTopRight", fill: "#f8717155", fontSize: 9 }} />
+                    <ReferenceLine y={4.0} stroke="#4ade8028" strokeDasharray="4 4" label={{ value: "4.00% target", position: "insideTopRight", fill: "#4ade8044", fontSize: 9 }} />
+                    <Line type="monotone" dataKey="conversion" stroke="#4ade80" strokeWidth={1.5} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#27272a", fontSize: 13 }}>
+                  Press START to begin
+                </div>
+              )}
+            </div>
+
+            {/* Right: Business Impact */}
+            <div style={{ width: 340, padding: "14px 22px", background: "#0b0b0f", display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.08em", marginBottom: 14 }}>BUSINESS IMPACT (ESTIMATED)</span>
+
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, alignItems: "baseline" }}>
+                <div>
+                  <div style={{ fontSize: 10, color: "#71717a", letterSpacing: "0.05em", marginBottom: 2 }}>STARTING</div>
+                  <div style={{ fontSize: 15, color: "#a1a1aa", fontWeight: 600 }}>2.80%</div>
+                </div>
+                <div style={{ color: "#3f3f46" }}>→</div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 10, color: "#71717a", letterSpacing: "0.05em", marginBottom: 2 }}>CURRENT</div>
+                  <div style={{ fontSize: 18, color: conv > 2.85 ? "#4ade80" : "#d4d4d8", fontWeight: 700 }}>{conv.toFixed(2)}%</div>
+                </div>
+              </div>
+
+              {(() => {
+                const totalLift = conv - 2.8;
+                // Scale penalty: we assume the effect size drops 20% when rolled out globally
+                const scaledLift = Math.max(0, totalLift * 0.8);
+                const userPoolWeekly = 5_000_000;
+                // Lift / 100 to make it a decimal, * user pool * 52 weeks * $240 ($20/mo annualized)
+                const annualizedARR = (scaledLift / 100) * userPoolWeekly * 52 * 240;
+
+                return (
+                  <div style={{ background: "#141418", border: "1px solid #27272a", borderRadius: 8, padding: "12px 16px", marginTop: "auto" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                      <span style={{ fontSize: 11, color: "#a1a1aa", fontWeight: 600 }}>ANNUALIZED ARR LIFT</span>
+                      <span style={{ fontSize: 10, color: "#71717a" }}>@ 5M users/wk</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                      <span style={{ fontSize: 22, fontWeight: 800, color: annualizedARR > 0 ? "#4ade80" : "#d4d4d8", letterSpacing: "-0.02em" }}>
+                        +${(annualizedARR / 1_000_000).toFixed(1)}M
+                      </span>
+                      <span style={{ fontSize: 10, color: "#71717a" }}>w/ 20% scale-down penalty</span>
+                    </div>
+                  </div>
+                );
+              })()}
+
+            </div>
           </div>
 
           {/* CURRENT STATE + CURRENT EXPERIMENT — taller highlight card */}
