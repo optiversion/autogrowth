@@ -400,7 +400,7 @@ export default function AutoGrowth() {
             background: running ? "transparent" : "#f4f4f5", color: running ? "#f87171" : "#0b0b0f",
             border: `1px solid ${running ? "#f8717155" : "#f4f4f5"}`, padding: "7px 20px", borderRadius: 3,
             fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", cursor: "pointer", fontFamily: "inherit",
-            animation: running ? "none" : "glow 2s infinite ease-in-out",
+            animation: running ? "none" : "glow 3s infinite ease-in-out",
             transition: "all 0.3s ease"
           }}>
             {running ? "STOP" : "START"}
