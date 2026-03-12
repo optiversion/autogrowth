@@ -374,7 +374,7 @@ export default function AutoGrowth() {
       `}</style>
 
       {/* HEADER */}
-      <div style={{ padding: "20px 22px", borderBottom: "1px solid #18181b", display: "flex", justifyContent: "space-between", alignItems: "center", height: 100 }}>
+      <div style={{ padding: "20px 22px", borderBottom: "1px solid #18181b", display: "flex", justifyContent: "space-between", alignItems: "center", height: 70 }}>
         <div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
             <span style={{ fontSize: 22, fontWeight: 700, color: "#f4f4f5", letterSpacing: "-0.03em" }}>autogrowth</span>
@@ -407,7 +407,7 @@ export default function AutoGrowth() {
       </div>
 
       {/* MAIN */}
-      <div style={{ display: "flex", height: "calc(100vh - 101px)" }}>
+      <div style={{ display: "flex", height: "calc(100vh - 71px)" }}>
 
         {/* LEFT: program.md */}
         {showProg && (
