@@ -194,8 +194,12 @@ const PHASES = [
 const DC = { KEEP: "#4ade80", REVERT: "#f87171", BLOCK: "#fbbf24" };
 
 const BlinkingDot = (props) => {
-  const { cx, cy, payload } = props;
-  if (payload.exp !== 0) return <circle cx={cx} cy={cy} r={3} fill="#4ade80" />;
+  const { cx, cy, payload, data } = props;
+  // Dynamic check for latest point
+  const isLatest = payload && data && payload.exp === data[data.length - 1].exp;
+
+  if (!isLatest) return <circle cx={cx} cy={cy} r={3} fill="#4ade80" />;
+
   return (
     <g>
       <circle cx={cx} cy={cy} r={4} fill="#4ade80">
@@ -481,10 +485,14 @@ export default function AutoGrowth() {
                 <LineChart data={chartData} margin={{ top: 8, right: 10, bottom: 0, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#141418" vertical={false} />
                   <XAxis
+                    type="number"
                     dataKey="exp"
+                    domain={[0, dataMax => Math.max(10, dataMax)]}
                     tick={{ fontSize: 9, fill: "#3f3f46" }}
                     stroke="#141418"
-                    hide={chartData.length <= 1}
+                    tickCount={chartData.length > 5 ? undefined : chartData.length}
+                    interval={0}
+                    padding={{ left: 0, right: 20 }}
                   />
                   <YAxis domain={[2, 5.5]} tick={{ fontSize: 9, fill: "#3f3f46" }} stroke="#141418" tickFormatter={v => `${v}%`} />
                   <Tooltip content={({ active, payload }) => active && payload?.length ? (
@@ -499,7 +507,7 @@ export default function AutoGrowth() {
                     dataKey="conversion"
                     stroke="#4ade80"
                     strokeWidth={1.5}
-                    dot={<BlinkingDot />}
+                    dot={<BlinkingDot data={chartData} />}
                     isAnimationActive={false}
                   />
                 </LineChart>
