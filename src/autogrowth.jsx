@@ -363,6 +363,10 @@ export default function AutoGrowth() {
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes slideIn { from{opacity:0;transform:translateY(-3px)} to{opacity:1;transform:translateY(0)} }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+        @keyframes glow { 
+          0%, 100% { box-shadow: 0 0 0px 0px rgba(255,255,255,0); border-color: rgba(244, 244, 245, 0.4); }
+          50% { box-shadow: 0 0 15px 1px rgba(255,255,255,0.15); border-color: rgba(244, 244, 245, 1); }
+        }
         *{box-sizing:border-box;margin:0;padding:0}
         ::-webkit-scrollbar{width:5px}
         ::-webkit-scrollbar-track{background:transparent}
@@ -396,6 +400,8 @@ export default function AutoGrowth() {
             background: running ? "transparent" : "#f4f4f5", color: running ? "#f87171" : "#0b0b0f",
             border: `1px solid ${running ? "#f8717155" : "#f4f4f5"}`, padding: "7px 20px", borderRadius: 3,
             fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", cursor: "pointer", fontFamily: "inherit",
+            animation: running ? "none" : "glow 2s infinite ease-in-out",
+            transition: "all 0.3s ease"
           }}>
             {running ? "STOP" : "START"}
           </button>
