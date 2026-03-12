@@ -452,7 +452,7 @@ export default function AutoGrowth() {
         <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
           {/* CHART & IMPACT PANEL */}
-          <div style={{ height: 192, borderBottom: "1px solid #18181b", display: "flex" }}>
+          <div style={{ height: 207, borderBottom: "1px solid #18181b", display: "flex" }}>
 
             {/* Left: Chart */}
             <div style={{ flex: 1, padding: "14px 18px 6px", borderRight: "1px solid #18181b", display: "flex", flexDirection: "column" }}>
@@ -512,12 +512,12 @@ export default function AutoGrowth() {
                       <span style={{ fontSize: 11, color: "#a1a1aa", fontWeight: 600, letterSpacing: "0.03em" }}>ANNUALIZED ARR LIFT</span>
                       <span style={{ fontSize: 9, color: "#52525b" }}>(assumes $20/mo Plus)</span>
                     </div>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-                      <span style={{ fontSize: 24, fontWeight: 800, color: annualizedARR > 0 ? "#4ade80" : "#d4d4d8", letterSpacing: "-0.02em" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <span style={{ fontSize: 26, fontWeight: 800, color: annualizedARR > 0 ? "#4ade80" : "#d4d4d8", letterSpacing: "-0.03em" }}>
                         +${(annualizedARR / 1_000_000).toFixed(1)}M
                       </span>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <span style={{ fontSize: 10, color: "#71717a" }}>@ 5M users/wk</span>
+                      <div style={{ display: "flex", flexDirection: "column", borderLeft: "1px solid #27272a", paddingLeft: 12, lineHeight: 1.4 }}>
+                        <span style={{ fontSize: 10, color: "#71717a", fontWeight: 500 }}>@ 5M users/wk</span>
                         <span style={{ fontSize: 10, color: "#71717a" }}>w/ 20% scale-down penalty</span>
                       </div>
                     </div>
