@@ -380,9 +380,7 @@ export default function AutoGrowth() {
             <span style={{ fontSize: 22, fontWeight: 700, color: "#f4f4f5", letterSpacing: "-0.03em" }}>autogrowth</span>
             <span style={{ fontSize: 11, color: "#a1a1aa", letterSpacing: "0.08em" }}>v0.2</span>
           </div>
-          <div style={{ fontSize: 13, color: "#a1a1aa", marginTop: 2, fontFamily: "'IBM Plex Sans', sans-serif", fontStyle: "italic" }}>
-            Autonomous lifecycle experimentation · one intervention, iterated until optimized
-          </div>
+
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           {running && (
